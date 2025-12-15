@@ -46,7 +46,7 @@
 <div class="box">
     <h2 style="text-align:center; margin-bottom:20px;">로그인</h2>
 
-    <form action="/login" method="post">
+    <form action="${pageContext.request.contextPath}/login" method="post">
         <input type="text" name="username" placeholder="아이디 (student / parent / teacher)" required>
         <input type="password" name="password" placeholder="비밀번호 (1234)" required>
         <button type="submit">로그인</button>
