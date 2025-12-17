@@ -1,6 +1,8 @@
 package org.example.teamproject.controller;
 
+import org.example.teamproject.DAO.UserDAO;
 import org.example.teamproject.vo.UserVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,33 +20,33 @@ public class UserController {
     // 로그인 처리
     @PostMapping("/login")
     public String login(UserVO user, HttpSession session) {
+        System.out.println("컨트롤러 username = " + user.getUsername());
+        System.out.println("컨트롤러 password = " + user.getPassword());
 
-        // ===== 임시 테스트 계정 (DB 연결 전) =====
-        if ("student".equals(user.getUsername()) && "1234".equals(user.getPassword())) {
-            user.setRole("STUDENT");
-        } else if ("parent".equals(user.getUsername()) && "1234".equals(user.getPassword())) {
-            user.setRole("PARENT");
-        } else if ("teacher".equals(user.getUsername()) && "1234".equals(user.getPassword())) {
-            user.setRole("TEACHER");
-        } else {
+        // 🔥 DB에서 사용자 조회
+        UserVO loginUser = userDAO.findByUsernameAndPassword(
+                user.getUsername(),
+                user.getPassword()
+        );
+
+        // 로그인 실패
+        if (loginUser == null) {
             return "login/login_fail";
         }
-        // ======================================
 
-        // 세션에 로그인 정보 저장
-        session.setAttribute("loginUser", user);
-        session.setAttribute("role", user.getRole());
+        // 로그인 성공 → 세션 저장
+        session.setAttribute("loginUser", loginUser);
+        session.setAttribute("role", loginUser.getRole());
 
-        // 🔥 [추가된 핵심 로직]
-        // 로그인 전에 가려던 페이지가 있으면 그곳으로 이동
+        // 로그인 전 가려던 페이지로 이동
         String redirectUrl = (String) session.getAttribute("redirectAfterLogin");
         if (redirectUrl != null) {
             session.removeAttribute("redirectAfterLogin");
             return "redirect:" + redirectUrl;
         }
 
-        // 기본 역할별 홈 이동
-        switch (user.getRole()) {
+        // 역할별 홈 이동
+        switch (loginUser.getRole()) {
             case "STUDENT":
                 return "redirect:/student/home";
             case "PARENT":
@@ -52,9 +54,12 @@ public class UserController {
             case "TEACHER":
                 return "redirect:/teacher/home";
             default:
-                return "login/login_fail";
+                return "redirect:/";
         }
     }
+
+
+
 
     // 로그아웃
     @GetMapping("/logout")
@@ -62,4 +67,31 @@ public class UserController {
         session.invalidate();
         return "redirect:/";
     }
+
+
+    @Autowired
+    private UserDAO userDAO;
+
+    // 회원가입 페이지
+    @GetMapping("/signup")
+    public String signupForm() {
+        return "login/signup";
+    }
+
+    // 회원가입 처리
+    @PostMapping("/signup")
+    public String signup(UserVO user) {
+
+        // 학생 / 학부모인데 학급 코드 없으면 실패
+        if (!"TEACHER".equals(user.getRole())
+                && (user.getClassCode() == null || user.getClassCode().isEmpty())) {
+            return "login/signup_fail";
+        }
+
+        userDAO.insertUser(user);
+        return "redirect:/login";
+    }
+
 }
+
+
