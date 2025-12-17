@@ -51,6 +51,13 @@
         <input type="password" name="password" placeholder="비밀번호 (1234)" required>
         <button type="submit">로그인</button>
     </form>
+    <div style="text-align:center; margin-top:15px;">
+        <a href="${pageContext.request.contextPath}/signup"
+           style="font-size:14px; color:#555; text-decoration:none;">
+            아직 계정이 없어요 👉 회원가입
+        </a>
+    </div>
+
 
 </div>
 </body>

@@ -1,17 +1,19 @@
 package org.example.teamproject.vo;
 
 public class UserVO {
-    private int userId;
+    private int id;
     private String username;
     private String password;
-    private String role;  // STUDENT / PARENT / TEACHER
+    private String email;
+    private String role;
+    private String classCode;
 
-    public int getUserId() {
-        return userId;
+    public int getId() {
+        return id;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -30,6 +32,14 @@ public class UserVO {
         this.password = password;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getRole() {
         return role;
     }
@@ -37,4 +47,13 @@ public class UserVO {
     public void setRole(String role) {
         this.role = role;
     }
+
+    public String getClassCode() {
+        return classCode;
+    }
+
+    public void setClassCode(String classCode) {
+        this.classCode = classCode;
+    }
+// getter / setter
 }
