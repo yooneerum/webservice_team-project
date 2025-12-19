@@ -5,10 +5,15 @@
   Time: 오전 1:55
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
+
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="stylesheet"
+        href="${pageContext.request.contextPath}/resources/css/app.css">
+
   <title>회원가입</title>
   <style>
     body {
@@ -60,6 +65,7 @@
 </head>
 
 <body>
+
 <div class="box">
   <h2 style="text-align:center;">회원가입</h2>
 

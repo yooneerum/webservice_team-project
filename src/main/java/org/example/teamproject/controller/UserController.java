@@ -38,13 +38,6 @@ public class UserController {
         session.setAttribute("loginUser", loginUser);
         session.setAttribute("role", loginUser.getRole());
 
-        // 로그인 전 가려던 페이지로 이동
-        String redirectUrl = (String) session.getAttribute("redirectAfterLogin");
-        if (redirectUrl != null) {
-            session.removeAttribute("redirectAfterLogin");
-            return "redirect:" + redirectUrl;
-        }
-
         // 역할별 홈 이동
         switch (loginUser.getRole()) {
             case "STUDENT":
