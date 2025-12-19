@@ -17,6 +17,11 @@
 <body>
 
 <jsp:include page="/WEB-INF/views/common/navbar.jsp" />
+
+<a href="${pageContext.request.contextPath}/teacher/notice/new">
+    ➕새로운 가정통신문 작성
+</a>
+
 <h2>내가 작성한 공지</h2>
 <p>공지 리스트</p>
 </body>

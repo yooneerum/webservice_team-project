@@ -21,6 +21,12 @@ body {
     letter-spacing: -1px;
 }
 
+.navbar a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
 .menu {
     display: flex;
     gap: 25px;
