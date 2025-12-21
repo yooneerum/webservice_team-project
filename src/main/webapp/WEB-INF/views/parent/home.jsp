@@ -1,4 +1,17 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>학부모 홈</title>
+</head>
 
-<h1>학부모 메인 화면</h1>
-<p>자녀의 일기를 열람하는 화면입니다.</p>
+
+<h2>👨‍👩‍👧 학부모 홈</h2>
+
+<div>
+    <a href="${pageContext.request.contextPath}/notice/list">
+        📢 학급 공지 보기
+    </a>
+</div>

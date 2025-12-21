@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="UserMapper">
+
+    <!-- 로그인 -->
+    <select id="findByUsernameAndPassword"
+            parameterType="org.example.teamproject.vo.UserVO"
+            resultType="org.example.teamproject.vo.UserVO">
+        SELECT *
+        FROM user
+        WHERE username = #{username}
+          AND password = #{password}
+    </select>
+
+    <!-- 회원가입 -->
+    <insert id="insertUser"
+            parameterType="org.example.teamproject.vo.UserVO">
+        INSERT INTO user (username, password, role, class_code)
+        VALUES (#{username}, #{password}, #{role}, #{classCode})
+    </insert>
+
+    <!-- 학생 -->
+    <select id="findStudentsByClassCode"
+            parameterType="string"
+            resultType="org.example.teamproject.vo.UserVO">
+        SELECT *
+        FROM user
+        WHERE class_code = #{classCode}
+          AND role = 'STUDENT'
+    </select>
+
+    <!-- 학부모 -->
+    <select id="findParentsByClassCode"
+            parameterType="string"
+            resultType="org.example.teamproject.vo.UserVO">
+        SELECT *
+        FROM user
+        WHERE class_code = #{classCode}
+          AND role = 'PARENT'
+    </select>
+
+</mapper>
