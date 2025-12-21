@@ -14,31 +14,48 @@ public class AuthInterceptor implements HandlerInterceptor {
                              HttpServletResponse response,
                              Object handler) throws Exception {
 
-        HttpSession session = request.getSession();
-        UserVO user = (UserVO) session.getAttribute("loginUser");
-
+        HttpSession session = request.getSession(false);
+        String contextPath = request.getContextPath();
         String uri = request.getRequestURI();
+
+        UserVO user = (session != null)
+                ? (UserVO) session.getAttribute("loginUser")
+                : null;
 
         // 로그인 안 한 경우
         if (user == null) {
-            session.setAttribute("redirectAfterLogin", uri);
-            response.sendRedirect("/login");
+            request.getSession(true).setAttribute("redirectAfterLogin", uri);
+            response.sendRedirect(contextPath + "/login");
             return false;
         }
-
 
         String role = user.getRole();
 
-        // 학생만 일기 작성 가능
-        if (uri.startsWith("/diary/write") && !role.equals("STUDENT")) {
-            response.sendRedirect("/diary/all");
+        // ✅ 학생만 일기 작성 가능
+        if (uri.startsWith(contextPath + "/diary/write")
+                && !role.equals("STUDENT")) {
+            response.sendRedirect(contextPath + "/diary/all");
             return false;
         }
 
-        // 역할별 접근 제한
-        if (uri.startsWith("/student") && !role.equals("STUDENT")) return false;
-        if (uri.startsWith("/parent") && !role.equals("PARENT")) return false;
-        if (uri.startsWith("/teacher") && !role.equals("TEACHER")) return false;
+        // ✅ 역할별 접근 제한
+        if (uri.startsWith(contextPath + "/student")
+                && !role.equals("STUDENT")) {
+            response.sendRedirect(contextPath + "/");
+            return false;
+        }
+
+        if (uri.startsWith(contextPath + "/parent")
+                && !role.equals("PARENT")) {
+            response.sendRedirect(contextPath + "/");
+            return false;
+        }
+
+        if (uri.startsWith(contextPath + "/teacher")
+                && !role.equals("TEACHER")) {
+            response.sendRedirect(contextPath + "/");
+            return false;
+        }
 
         return true;
     }

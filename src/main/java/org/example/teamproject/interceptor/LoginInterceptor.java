@@ -14,23 +14,27 @@ public class LoginInterceptor implements HandlerInterceptor {
                              Object handler) throws Exception {
 
         String uri = request.getRequestURI();
+        String contextPath = request.getContextPath();
 
-        // 🔥 로그인 / 회원가입은 인터셉터 제외
-        if (uri.endsWith("/login") || uri.endsWith("/signup")) {
+        // ✅ 로그인 / 회원가입 / 정적 리소스는 통과
+        if (uri.equals(contextPath + "/login")
+                || uri.equals(contextPath + "/signup")
+                || uri.startsWith(contextPath + "/resources")) {
             return true;
         }
 
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
 
-        // 로그인 안 된 경우
-        if (session.getAttribute("loginUser") == null) {
+        // ❌ 로그인 안 된 경우
+        if (session == null || session.getAttribute("loginUser") == null) {
 
             // 원래 가려던 주소 저장
             String query = request.getQueryString();
             String fullUrl = (query == null) ? uri : uri + "?" + query;
-            session.setAttribute("redirectAfterLogin", fullUrl);
 
-            response.sendRedirect(request.getContextPath() + "/login");
+            request.getSession(true).setAttribute("redirectAfterLogin", fullUrl);
+
+            response.sendRedirect(contextPath + "/login");
             return false;
         }
 

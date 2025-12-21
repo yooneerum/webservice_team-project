@@ -8,13 +8,13 @@
         http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!-- @Controller, @RequestMapping 활성화 -->
+    <!-- @Controller 활성화 -->
     <mvc:annotation-driven />
 
-    <!-- 인터셉터는 반드시 하나의 블록에 -->
+    <!-- 인터셉터 -->
     <mvc:interceptors>
 
-        <!-- 1️⃣ 로그인 여부 확인 -->
+        <!-- 로그인 여부 확인 -->
         <mvc:interceptor>
             <mvc:mapping path="/student/**"/>
             <mvc:mapping path="/parent/**"/>
@@ -23,7 +23,7 @@
             <bean class="org.example.teamproject.interceptor.LoginInterceptor"/>
         </mvc:interceptor>
 
-        <!-- 2️⃣ 권한(Role) 확인 -->
+        <!-- 권한(Role) 확인 -->
         <mvc:interceptor>
             <mvc:mapping path="/student/**"/>
             <mvc:mapping path="/parent/**"/>
@@ -33,6 +33,7 @@
 
     </mvc:interceptors>
 
+    <!-- 정적 리소스 -->
     <mvc:resources mapping="/resources/**" location="/resources/" />
 
     <!-- 컴포넌트 스캔 -->

@@ -1,14 +1,24 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="UserMapper">
 
+    <!-- 🔥 컬럼명 ↔ VO 필드명 매핑 -->
+    <resultMap id="UserMap" type="org.example.teamproject.vo.UserVO">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="email" column="email"/>
+        <result property="role" column="role"/>
+        <result property="classCode" column="class_code"/>
+    </resultMap>
+
     <!-- 로그인 -->
     <select id="findByUsernameAndPassword"
             parameterType="org.example.teamproject.vo.UserVO"
-            resultType="org.example.teamproject.vo.UserVO">
+            resultMap="UserMap">
         SELECT *
         FROM user
         WHERE username = #{username}
@@ -18,24 +28,36 @@
     <!-- 회원가입 -->
     <insert id="insertUser"
             parameterType="org.example.teamproject.vo.UserVO">
-        INSERT INTO user (username, password, role, class_code)
-        VALUES (#{username}, #{password}, #{role}, #{classCode})
+        INSERT INTO user (
+            username, password, email, role, class_code
+        ) VALUES (
+                     #{username}, #{password}, #{email}, #{role}, #{classCode}
+                 )
     </insert>
 
-    <!-- 학생 -->
+    <!-- ID로 조회 -->
+    <select id="findById"
+            parameterType="int"
+            resultMap="UserMap">
+        SELECT *
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+    <!-- 학생 목록 -->
     <select id="findStudentsByClassCode"
-            parameterType="string"
-            resultType="org.example.teamproject.vo.UserVO">
+            parameterType="String"
+            resultMap="UserMap">
         SELECT *
         FROM user
         WHERE class_code = #{classCode}
           AND role = 'STUDENT'
     </select>
 
-    <!-- 학부모 -->
+    <!-- 학부모 목록 -->
     <select id="findParentsByClassCode"
-            parameterType="string"
-            resultType="org.example.teamproject.vo.UserVO">
+            parameterType="String"
+            resultMap="UserMap">
         SELECT *
         FROM user
         WHERE class_code = #{classCode}

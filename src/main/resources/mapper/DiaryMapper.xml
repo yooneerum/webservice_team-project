@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DiaryMapper">
+
+    <!-- 전체 일기 -->
+    <select id="findAll" resultType="org.example.teamproject.vo.PostVO">
+        SELECT
+            post_id AS postId,
+            user_id AS userId,
+            class_code AS classCode,
+            title,
+            content,
+            created_at AS createdAt
+        FROM post
+        WHERE category = 'DIARY'
+        ORDER BY post_id DESC
+    </select>
+
+    <!-- 학급 일기 -->
+    <select id="findByClassCode"
+            parameterType="String"
+            resultType="org.example.teamproject.vo.PostVO">
+        SELECT
+            post_id AS postId,
+            user_id AS userId,
+            class_code AS classCode,
+            title,
+            content,
+            created_at AS createdAt
+        FROM post
+        WHERE category = 'DIARY'
+          AND class_code = #{classCode}
+        ORDER BY post_id DESC
+    </select>
+
+    <!-- 내 일기 -->
+    <select id="findByUserId"
+            parameterType="int"
+            resultType="org.example.teamproject.vo.PostVO">
+        SELECT
+            post_id AS postId,
+            user_id AS userId,
+            class_code AS classCode,
+            title,
+            content,
+            created_at AS createdAt
+        FROM post
+        WHERE category = 'DIARY'
+          AND user_id = #{userId}
+        ORDER BY post_id DESC
+    </select>
+
+    <!-- 단일 조회 -->
+    <select id="findById"
+            parameterType="int"
+            resultType="org.example.teamproject.vo.PostVO">
+        SELECT
+            post_id AS postId,
+            user_id AS userId,
+            class_code AS classCode,
+            title,
+            content,
+            created_at AS createdAt
+        FROM post
+        WHERE post_id = #{postId}
+    </select>
+
+    <!-- 작성 -->
+    <insert id="insert"
+            parameterType="org.example.teamproject.vo.PostVO">
+        INSERT INTO post (
+            user_id,
+            class_code,
+            title,
+            content,
+            category
+        ) VALUES (
+                     #{userId},
+                     #{classCode},
+                     #{title},
+                     #{content},
+                     'DIARY'
+                 )
+    </insert>
+
+    <!-- 수정 -->
+    <update id="update"
+            parameterType="org.example.teamproject.vo.PostVO">
+        UPDATE post
+        SET
+            title = #{title},
+            content = #{content}
+        WHERE post_id = #{postId}
+    </update>
+
+    <!-- 삭제 -->
+    <delete id="deleteByPostIdAndUserId">
+        DELETE FROM post
+        WHERE post_id = #{postId}
+          AND user_id = #{userId}
+    </delete>
+
+</mapper>

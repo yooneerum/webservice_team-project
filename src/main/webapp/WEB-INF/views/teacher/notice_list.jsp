@@ -1,28 +1,22 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: yooneerum
-  Date: 25. 12. 18.
-  Time: 오전 2:58
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
-<html>
-<head>
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/resources/css/app.css">
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+<h2>📢 내가 쓴 공지</h2>
 
-    <title>Title</title>
-</head>
-<body>
+<c:if test="${empty notices}">
+    <p>작성한 공지가 없습니다.</p>
+</c:if>
 
-<jsp:include page="/WEB-INF/views/common/navbar.jsp" />
+<c:if test="${not empty notices}">
+    <ul>
+        <c:forEach var="n" items="${notices}">
+            <li>
+                <a href="${pageContext.request.contextPath}/notice/detail?id=${n.id}">
+                        ${n.title}
+                </a>
+            </li>
+        </c:forEach>
+    </ul>
+</c:if>
 
-<a href="${pageContext.request.contextPath}/teacher/notice/new">
-    ➕새로운 가정통신문 작성
-</a>
-
-<h2>내가 작성한 공지</h2>
-<p>공지 리스트</p>
-</body>
-</html>
+<a href="${pageContext.request.contextPath}/teacher/home">← 교사 홈</a>

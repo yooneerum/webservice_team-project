@@ -1,15 +1,25 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<h2>✍️ 일기 쓰기</h2>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<form action="/diary/write" method="post">
-    <input type="text" name="title" placeholder="제목" required><br/><br/>
-    <textarea name="content" rows="5" placeholder="오늘의 일기" required></textarea><br/><br/>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-    <select name="scope">
-        <option value="ALL">전체 공개</option>
-        <option value="CLASS">우리반</option>
-        <option value="MINE">나만 보기</option>
-    </select><br/><br/>
+<h2>✏️ 일기 작성</h2>
+
+<form action="${ctx}/diary/write" method="post">
+    <div>
+        제목<br>
+        <input type="text" name="title" required>
+    </div>
+
+    <br>
+
+    <div>
+        내용<br>
+        <textarea name="content" rows="6" cols="50" required></textarea>
+    </div>
+
+    <br>
 
     <button type="submit">저장</button>
+    <a href="${ctx}/diary/mine">취소</a>
 </form>
